@@ -18,11 +18,20 @@ namespace Didact.Services
         {
             _logger.LogInformation("Starting {name}...", nameof(DatabaseEngineBackgroundService));
 
-            while (!stoppingToken.IsCancellationRequested)
+            try
             {
-                _logger.LogInformation("Ping from the {name}.", nameof(DatabaseEngineBackgroundService));
-                await _hubContext.Clients.All.SendAsync("SendMessage");
-                await Task.Delay(5000);
+                while (!stoppingToken.IsCancellationRequested)
+                {
+                    _logger.LogInformation("Ping from the {name}.", nameof(DatabaseEngineBackgroundService));
+                    await _hubContext.Clients.All.SendAsync("SendMessage");
+                    await Task.Delay(5000);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical("{name} failed with the following exception:{nl}{exception}",
+                    nameof(DatabaseEngineBackgroundService), Environment.NewLine, ex);
+                throw;
             }
         }
     }

@@ -18,11 +18,20 @@ namespace Didact.Services
         {
             _logger.LogInformation("Starting {name}...", nameof(AssemblyReaderBackgroundService));
 
-            while (!stoppingToken.IsCancellationRequested)
+            try
             {
-                _logger.LogInformation("Ping from the {name}.", nameof(AssemblyReaderBackgroundService));
-                await _hubContext.Clients.All.SendAsync("SendMessage");
-                await Task.Delay(7000);
+                while (!stoppingToken.IsCancellationRequested)
+                {
+                    _logger.LogInformation("Ping from the {name}.", nameof(AssemblyReaderBackgroundService));
+                    await _hubContext.Clients.All.SendAsync("SendMessage");
+                    await Task.Delay(7000);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical("{name} failed with the following exception:{nl}{exception}",
+                    nameof(AssemblyReaderBackgroundService), Environment.NewLine, ex);
+                throw;
             }
         }
     }
