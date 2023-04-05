@@ -5,7 +5,7 @@ The decoupled, atomic REST API and orchestration engine for the Didact .NET Stan
 ## Didact Platform Repositories
 
 * The REST API and orchestration engine: [didact-engine](https://github.com/DidactHQ/didact-engine)
-* The VueJS single-page application dashboard: [didactui](https://github.com/DidactHQ/didactui)
+* The VueJS single-page application dashboard: [didact-ui](https://github.com/DidactHQ/didact-ui)
 
 ## Summary
 
@@ -15,4 +15,4 @@ This .NET 6 application is responsible for:
 * Exposing workflow manipulations via a set of REST endpoints.
 * Persisting the metadata of Didact blocks and Didact workflows into database storage.
 * Dynamically loading Didact class library projects and executing Didact workflows.
-* Sending real-time updates to [didactui](https://github.com/DidactHQ/didactui) via SignalR hubs.
+* Sending real-time updates to [didact-ui](https://github.com/DidactHQ/didact-ui) via SignalR hubs.
