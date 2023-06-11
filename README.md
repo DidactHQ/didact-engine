@@ -5,7 +5,9 @@ The decoupled, atomic REST API and orchestration engine for the Didact .NET Stan
 ## Didact Platform Repositories
 
 * The REST API and orchestration engine: [didact-engine](https://github.com/DidactHQ/didact-engine)
+* The console application responsible for heartbeats, engine revives, and maintenance tasks: didact-sentinel
 * The VueJS single-page application dashboard: [didact-ui](https://github.com/DidactHQ/didact-ui)
+* The core library containing the block classes, as well as other model information. [didact-core](https://github.com/DidactHQ/didact-core)
 
 ## Summary
 
