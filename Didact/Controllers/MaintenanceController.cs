@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Didact.Controllers
+namespace DidactEngine.Controllers
 {
     [ApiController]
     [Route("api/{controller}")]

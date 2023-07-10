@@ -1,7 +1,7 @@
-using Didact.Services;
+using DidactEngine.Services;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using Didact.Hubs;
+using DidactEngine.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 

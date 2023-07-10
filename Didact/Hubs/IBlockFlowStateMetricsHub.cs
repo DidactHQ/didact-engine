@@ -1,4 +1,4 @@
-﻿namespace Didact.Hubs
+﻿namespace DidactEngine.Hubs
 {
     public interface IBlockFlowStateMetricsHub
     {

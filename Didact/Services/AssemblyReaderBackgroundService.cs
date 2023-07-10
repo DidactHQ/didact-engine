@@ -1,7 +1,7 @@
-﻿using Didact.Hubs;
+﻿using DidactEngine.Hubs;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Didact.Services
+namespace DidactEngine.Services
 {
     public class AssemblyReaderBackgroundService : BackgroundService
     {

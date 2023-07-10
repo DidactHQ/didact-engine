@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace Didact.Hubs
+namespace DidactEngine.Hubs
 {
     public class BlockFlowStateMetricsHub : Hub
     {
