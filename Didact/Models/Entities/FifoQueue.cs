@@ -23,5 +23,7 @@
         public byte[] RowVersion { get; set; } = null!;
 
         public virtual Organization Organization { get; set; } = null!;
+
+        public virtual ICollection<FifoQueueInbound> FifoQueueInbounds { get; } = new List<FifoQueueInbound>();
     }
 }

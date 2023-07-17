@@ -18,8 +18,6 @@
 
         public int ConcurrencyLimit { get; set; }
 
-        public int TriggerTypeId { get; set; }
-
         public DateTime Created { get; set; }
 
         public string CreatedBy { get; set; } = null!;
@@ -34,6 +32,8 @@
 
         public virtual Organization Organization { get; set; } = null!;
 
-        public virtual TriggerType TriggerType { get; set; } = null!;
+        public virtual ICollection<StandardQueueInbound> StandardQueueInbounds { get; } = new List<StandardQueueInbound>();
+
+        public virtual ICollection<FifoQueueInbound> FifoQueueInbounds { get; } = new List<FifoQueueInbound>();
     }
 }

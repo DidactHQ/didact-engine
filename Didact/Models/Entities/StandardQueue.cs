@@ -23,5 +23,7 @@
         public byte[] RowVersion { get; set; } = null!;
 
         public virtual Organization Organization { get; set; } = null!;
+
+        public virtual ICollection<StandardQueueInbound> StandardQueueInbounds { get; } = new List<StandardQueueInbound>();
     }
 }
