@@ -70,6 +70,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHostedService<DatabaseEngineBackgroundService>();
 builder.Services.AddHostedService<AssemblyReaderBackgroundService>();
+builder.Services.AddSingleton<ExecutionManager>();
 builder.Services.AddSignalR();
 
 var app = builder.Build();
