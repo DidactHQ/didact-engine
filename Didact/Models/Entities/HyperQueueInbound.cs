@@ -1,12 +1,12 @@
 ﻿namespace DidactEngine.Models.Entities
 {
-    public class StandardQueueInbound
+    public class HyperQueueInbound
     {
-        public long StandardQueueInboundId { get; set; }
+        public long HyperQueueInboundId { get; set; }
 
         public int OrganizationId { get; set; }
 
-        public int StandardQueueId { get; set; }
+        public int HyperQueueId { get; set; }
 
         public long FlowId { get; set; }
 
@@ -22,7 +22,7 @@
 
         public virtual Organization Organization { get; set; } = null!;
 
-        public virtual StandardQueue StandardQueue { get; set; } = null!;
+        public virtual HyperQueue HyperQueue { get; set; } = null!;
 
         public virtual Flow Flow { get; set; } = null!;
     }
