@@ -1,8 +1,8 @@
 ﻿namespace DidactEngine.Models.Entities
 {
-    public class StandardQueue
+    public class HyperQueue
     {
-        public int StandardQueueId { get; set; }
+        public int HyperQueueId { get; set; }
 
         public int OrganizationId { get; set; }
 
@@ -24,6 +24,6 @@
 
         public virtual Organization Organization { get; set; } = null!;
 
-        public virtual ICollection<StandardQueueInbound> StandardQueueInbounds { get; } = new List<StandardQueueInbound>();
+        public virtual ICollection<HyperQueueInbound> HyperQueueInbounds { get; } = new List<HyperQueueInbound>();
     }
 }

@@ -4,11 +4,11 @@ using DidactEngine.Models.Entities;
 
 namespace DidactEngine.Services.Contexts.Configurations
 {
-    public partial class StandardQueueConfiguration : IEntityTypeConfiguration<StandardQueue>
+    public partial class HyperQueueConfiguration : IEntityTypeConfiguration<HyperQueue>
     {
-        public void Configure(EntityTypeBuilder<StandardQueue> entity)
+        public void Configure(EntityTypeBuilder<HyperQueue> entity)
         {
-            entity.ToTable(nameof(StandardQueue));
+            entity.ToTable(nameof(HyperQueue));
             entity.Property(e => e.Name).IsRequired().HasMaxLength(255);
             entity.Property(e => e.CreatedBy).HasMaxLength(255);
             entity.Property(e => e.LastUpdatedBy).HasMaxLength(255);
@@ -18,6 +18,6 @@ namespace DidactEngine.Services.Contexts.Configurations
             OnConfigurePartial(entity);
         }
 
-        partial void OnConfigurePartial(EntityTypeBuilder<StandardQueue> entity);
+        partial void OnConfigurePartial(EntityTypeBuilder<HyperQueue> entity);
     }
 }
