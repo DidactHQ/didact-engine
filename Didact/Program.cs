@@ -1,7 +1,6 @@
 using DidactEngine.Hubs;
 using DidactEngine.Services;
 using DidactEngine.Services.Contexts;
-using DidactEngine.Services.Extensions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -88,6 +87,8 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapHub<BlockFlowStateMetricsHub>($"/hubs/{nameof(BlockFlowStateMetricsHub).ToLower()}");
 
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+
 try
 {
     using (var scope = app.Services.CreateScope())
@@ -98,28 +99,15 @@ try
         }
         catch (Exception e)
         {
-            scope.ServiceProvider
-                .GetRequiredService<ILogger<Program>>()
-                .LogError(e, "Unhandled exception while applying migrations for {T}", typeof(DidactDbContext));
-
-            Console.WriteLine(e);
-
+            logger.LogError(e, "Unhandled exception while applying migrations for {T}", typeof(DidactDbContext));
             throw;
         }
 
-    //app.MigrateDatabase<DidactDbContext>();
     app.Run();
-    //Log.Information("Shutting down");
     return 0;
 }
-catch (Exception e)
+catch (Exception ex)
 {
-    Console.WriteLine("An exception occurred. See below.");
-    Console.WriteLine(e);
-    //Log.Fatal(e, "An unhandled exception occurred during bootstrapping");
+    logger.LogCritical(ex, "An unhandled exception occurred during bootstrapping");
     return 1;
-}
-finally
-{
-    //Log.CloseAndFlush();
 }
