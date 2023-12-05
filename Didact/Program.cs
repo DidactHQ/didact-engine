@@ -95,7 +95,9 @@ try
     using (var dbContext = scope.ServiceProvider.GetRequiredService<DidactDbContext>())
     try
     {
+        logger.LogInformation("Attempting to migrate the database on engine startup...");
         dbContext.Database.Migrate();
+        logger.LogInformation("Database migrated successfully.");
     }
     catch (Exception ex)
     {
