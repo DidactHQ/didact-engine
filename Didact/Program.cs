@@ -93,15 +93,15 @@ try
 {
     using (var scope = app.Services.CreateScope())
     using (var dbContext = scope.ServiceProvider.GetRequiredService<DidactDbContext>())
-        try
-        {
-            dbContext.Database.Migrate();
-        }
-        catch (Exception e)
-        {
-            logger.LogError(e, "Unhandled exception while applying migrations for {T}", typeof(DidactDbContext));
-            throw;
-        }
+    try
+    {
+        dbContext.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Unhandled exception while applying migrations for {T}", typeof(DidactDbContext));
+        throw;
+    }
 
     app.Run();
     return 0;
