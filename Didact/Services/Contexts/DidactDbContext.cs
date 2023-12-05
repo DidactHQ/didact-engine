@@ -67,8 +67,8 @@ namespace DidactEngine.Services.Contexts
             modelBuilder.ApplyConfiguration(new Configurations.FlowScheduleConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.OrganizationConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.ScheduleTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.StandardQueueConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.StandardQueueInboundConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.HyperQueueConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.HyperQueueInboundConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.TriggerTypeConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.StateConfiguration());
 
