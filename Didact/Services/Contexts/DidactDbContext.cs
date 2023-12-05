@@ -22,9 +22,9 @@ namespace DidactEngine.Services.Contexts
 
         public virtual DbSet<ScheduleType> ScheduleTypes { get; set; } = null!;
 
-        public virtual DbSet<StandardQueue> StandardQueues { get; set; } = null!;
+        public virtual DbSet<HyperQueue> HyperQueues { get; set; } = null!;
 
-        public virtual DbSet<StandardQueueInbound> StandardQueueInbounds { get; set; } = null!;
+        public virtual DbSet<HyperQueueInbound> HyperQueueInbounds { get; set; } = null!;
 
         public virtual DbSet<State> States { get; set; } = null!;
 
