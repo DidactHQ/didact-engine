@@ -10,6 +10,8 @@
 
         public long FlowId { get; set; }
 
+        public long FlowRunId { get; set; }
+
         public DateTime Created { get; set; }
 
         public string CreatedBy { get; set; } = null!;
@@ -25,5 +27,7 @@
         public virtual HyperQueue HyperQueue { get; set; } = null!;
 
         public virtual Flow Flow { get; set; } = null!;
+
+        public virtual FlowRun FlowRun { get; set; } = null!;
     }
 }
