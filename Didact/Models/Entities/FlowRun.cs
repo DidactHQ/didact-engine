@@ -8,7 +8,7 @@
 
         public int OrganizationId { get; set; }
 
-        public long ParentFlowRunId { get; set; }
+        public long? ParentFlowRunId { get; set; }
 
         public int TriggerTypeId { get; set; }
 
