@@ -16,6 +16,8 @@ namespace DidactEngine.Services.Contexts
 
         public virtual DbSet<Flow> Flows { get; set; } = null!;
 
+        public virtual DbSet<FlowRun> FlowRuns { get; set; } = null!;
+
         public virtual DbSet<FlowSchedule> FlowSchedules { get; set; } = null!;
 
         public virtual DbSet<Organization> Organizations { get; set; } = null!;
@@ -64,6 +66,7 @@ namespace DidactEngine.Services.Contexts
             modelBuilder.ApplyConfiguration(new Configurations.FifoQueueConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.FifoQueueInboundConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.FlowConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.FlowRunConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.FlowScheduleConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.OrganizationConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.ScheduleTypeConfiguration());
