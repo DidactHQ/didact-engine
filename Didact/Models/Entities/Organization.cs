@@ -18,6 +18,8 @@
 
         public virtual ICollection<Flow> Flows { get; } = new List<Flow>();
 
+        public virtual ICollection<FlowRun> FlowRuns { get; } = new List<FlowRun>();
+
         public virtual ICollection<HyperQueue> HyperQueues { get; } = new List<HyperQueue>();
 
         public virtual ICollection<FifoQueue> FifoQueues { get; } = new List<FifoQueue>();
