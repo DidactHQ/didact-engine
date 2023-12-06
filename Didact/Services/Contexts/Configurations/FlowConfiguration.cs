@@ -22,7 +22,7 @@ namespace DidactEngine.Services.Contexts.Configurations
                 .WithMany(p => p.Flows)
                 .HasForeignKey(d => d.OrganizationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Flow_Organization");
+                .HasConstraintName($"FK_{nameof(Flow)}_{nameof(Organization)}");
 
             OnConfigurePartial(entity);
         }
