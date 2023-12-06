@@ -17,19 +17,25 @@ namespace DidactEngine.Services.Contexts.Configurations
                 .WithMany(p => p.FifoQueueInbounds)
                 .HasForeignKey(d => d.OrganizationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_FifoQueueInbound_Organization");
+                .HasConstraintName($"FK_{nameof(FifoQueueInbound)}_{nameof(Organization)}");
 
             entity.HasOne(d => d.Flow)
                 .WithMany(p => p.FifoQueueInbounds)
                 .HasForeignKey(d => d.FlowId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_FifoQueueInbound_Flow");
+                .HasConstraintName($"FK_{nameof(FifoQueueInbound)}_{nameof(Flow)}");
+
+            entity.HasOne(d => d.FlowRun)
+                .WithMany(p => p.FifoQueueInbounds)
+                .HasForeignKey(d => d.FlowRunId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName($"FK_{nameof(FifoQueueInbound)}_{nameof(FlowRun)}");
 
             entity.HasOne(d => d.FifoQueue)
                 .WithMany(p => p.FifoQueueInbounds)
                 .HasForeignKey(d => d.FifoQueueId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_FifoQueueInbound_FifoQueue");
+                .HasConstraintName($"FK_{nameof(FifoQueueInbound)}_{nameof(FifoQueue)}");
 
             OnConfigurePartial(entity);
         }
