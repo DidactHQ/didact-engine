@@ -33,9 +33,5 @@
         public virtual Organization Organization { get; set; } = null!;
 
         public virtual ICollection<FlowRun> FlowRuns { get; } = new List<FlowRun>();
-
-        public virtual ICollection<HyperQueueInbound> HyperQueueInbounds { get; } = new List<HyperQueueInbound>();
-
-        public virtual ICollection<FifoQueueInbound> FifoQueueInbounds { get; } = new List<FifoQueueInbound>();
     }
 }

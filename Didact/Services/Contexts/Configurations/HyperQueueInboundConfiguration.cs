@@ -19,12 +19,6 @@ namespace DidactEngine.Services.Contexts.Configurations
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName($"FK_{nameof(HyperQueueInbound)}_{nameof(Organization)}");
 
-            entity.HasOne(d => d.Flow)
-                .WithMany(p => p.HyperQueueInbounds)
-                .HasForeignKey(d => d.FlowId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName($"FK_{nameof(HyperQueueInbound)}_{nameof(Flow)}");
-
             entity.HasOne(d => d.FlowRun)
                 .WithMany(p => p.HyperQueueInbounds)
                 .HasForeignKey(d => d.FlowRunId)

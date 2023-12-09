@@ -8,8 +8,6 @@
 
         public int FifoQueueId { get; set; }
 
-        public long FlowId { get; set; }
-
         public long FlowRunId { get; set; }
 
         public DateTime Created { get; set; }
@@ -25,8 +23,6 @@
         public virtual Organization Organization { get; set; } = null!;
 
         public virtual FifoQueue FifoQueue { get; set; } = null!;
-
-        public virtual Flow Flow { get; set; } = null!;
 
         public virtual FlowRun FlowRun { get; set; } = null!;
     }
