@@ -24,6 +24,8 @@
 
         public virtual ICollection<FlowRun> FlowRuns { get; } = new List<FlowRun>();
 
+        public virtual ICollection<BlockRun> BlockRuns { get; } = new List<BlockRun>();
+
         public virtual ICollection<HyperQueue> HyperQueues { get; } = new List<HyperQueue>();
 
         public virtual ICollection<FifoQueue> FifoQueues { get; } = new List<FifoQueue>();

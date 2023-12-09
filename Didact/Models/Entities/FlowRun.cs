@@ -48,6 +48,8 @@
 
         public virtual TriggerType TriggerType { get; set; } = null!;
 
+        public virtual ICollection<BlockRun> BlockRuns { get; set; } = new List<BlockRun>();
+
         public virtual ICollection<HyperQueueInbound> HyperQueueInbounds { get; } = new List<HyperQueueInbound>();
 
         public virtual ICollection<FifoQueueInbound> FifoQueueInbounds { get; } = new List<FifoQueueInbound>();
