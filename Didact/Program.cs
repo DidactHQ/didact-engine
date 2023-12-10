@@ -1,5 +1,6 @@
 using DidactEngine.Hubs;
 using DidactEngine.Services;
+using DidactEngine.Services.BackgroundServices;
 using DidactEngine.Services.Contexts;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
