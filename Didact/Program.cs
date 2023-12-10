@@ -23,20 +23,6 @@ builder.Services.AddCors(options =>
         });
 });
 
-string swaggerVersion = "v1";
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc(swaggerVersion, new OpenApiInfo
-    {
-        Version = swaggerVersion,
-        Title = "Didact REST API",
-        Description = "The central REST API of the Didact Engine."
-    });
-
-    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-});
-
 #region Configure DbContext and Gateway.
 
 var connStringFactory = (string name) => new SqlConnectionStringBuilder(
@@ -65,11 +51,28 @@ builder.Services.AddDbContext<DidactDbContext>(
 
 builder.Services.AddControllers();
 builder.Services.AddMemoryCache();
+
+// Register Swagger
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+string swaggerVersion = "v1";
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc(swaggerVersion, new OpenApiInfo
+    {
+        Version = swaggerVersion,
+        Title = "Didact REST API",
+        Description = "The central REST API of the Didact Engine."
+    });
+
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+});
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+// Register BackgroundServices
 builder.Services.AddHostedService<DatabaseEngineBackgroundService>();
 builder.Services.AddHostedService<AssemblyReaderBackgroundService>();
+
 builder.Services.AddSingleton<ExecutionManager>();
 builder.Services.AddSignalR();
 
