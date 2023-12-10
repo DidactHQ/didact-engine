@@ -33,5 +33,7 @@
         public virtual ICollection<HyperQueueInbound> HyperQueueInbounds { get; } = new List<HyperQueueInbound>();
 
         public virtual ICollection<FifoQueueInbound> FifoQueueInbounds { get; } = new List<FifoQueueInbound>();
+
+        public virtual ICollection<Engine> Engines { get; } = new List<Engine>();
     }
 }
