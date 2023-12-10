@@ -4,6 +4,7 @@ using DidactEngine.Services.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DidactEngine.Migrations
 {
     [DbContext(typeof(DidactDbContext))]
-    partial class DidactDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231210080814_AddEngineConfiguration")]
+    partial class AddEngineConfiguration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -147,9 +150,6 @@ namespace DidactEngine.Migrations
                     b.HasKey("EngineId");
 
                     b.HasIndex("OrganizationId");
-
-                    b.HasIndex("UniqueName")
-                        .IsUnique();
 
                     b.ToTable("Engine", (string)null);
                 });
