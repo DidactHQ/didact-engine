@@ -9,6 +9,7 @@ namespace DidactEngine.Services.Contexts.Configurations
         public void Configure(EntityTypeBuilder<Engine> entity)
         {
             entity.ToTable(nameof(Engine));
+            entity.HasIndex(e => e.UniqueName).IsUnique();
             entity.Property(e => e.Name).IsRequired().HasMaxLength(255);
             entity.Property(e => e.UniqueName).IsRequired().HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(255);
