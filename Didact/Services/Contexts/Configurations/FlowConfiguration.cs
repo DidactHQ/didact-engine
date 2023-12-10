@@ -9,6 +9,7 @@ namespace DidactEngine.Services.Contexts.Configurations
         public void Configure(EntityTypeBuilder<Flow> entity)
         {
             entity.ToTable(nameof(Flow));
+            entity.HasIndex(e => e.Name).IsUnique();
             entity.Property(e => e.Name).IsRequired().HasMaxLength(255);
             entity.Property(e => e.Version).HasMaxLength(255);
             entity.Property(e => e.AssemblyName).IsRequired();
