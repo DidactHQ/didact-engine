@@ -32,6 +32,8 @@ namespace DidactEngine.Services.Contexts
 
         public virtual DbSet<TriggerType> TriggerTypes { get; set; } = null!;
 
+        public virtual DbSet<Engine> Engines { get; set; } = null!;
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -74,6 +76,7 @@ namespace DidactEngine.Services.Contexts
             modelBuilder.ApplyConfiguration(new Configurations.HyperQueueInboundConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.TriggerTypeConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.StateConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.EngineConfiguration());
 
             OnModelCreatingPartial(modelBuilder);
         }
