@@ -24,6 +24,10 @@
 
         public int StateId { get; set; }
 
+        public DateTime StateLastUpdated { get; set; }
+
+        public string StateLastUpdatedBy { get; set; } = null!;
+
         public DateTime? ExecutionStarted { get; set; }
 
         public DateTime? ExecutionEnded { get; set; }
