@@ -26,4 +26,10 @@
     <Folder Include="Services\Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="DidactCore">
+      <HintPath>..\..\didact-core\DidactCore\bin\Debug\netstandard2.1\DidactCore.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
