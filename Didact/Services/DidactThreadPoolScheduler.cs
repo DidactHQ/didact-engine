@@ -34,5 +34,30 @@ namespace DidactEngine.Services
 
             _threads.ToList().ForEach(t => t.Start());
         }
+
+        protected sealed override void QueueTask(Task task)
+        {
+            _tasks.Enqueue(task);
+        }
+
+        protected sealed override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)
+        {
+            // If the task was previously queued, we can't arbitrarily remove it from the FIFO queue.
+            // So we just have to wait for it to be executed.
+            if (taskWasPreviouslyQueued)
+            {
+                return false;
+            }
+            // If the task was not previously queued, go ahead and inline execute it.
+            else
+            {
+                return TryExecuteTask(task);
+            }
+        }
+
+        protected sealed override IEnumerable<Task> GetScheduledTasks()
+        {
+            return _tasks.ToArray();
+        }
     }
 }
