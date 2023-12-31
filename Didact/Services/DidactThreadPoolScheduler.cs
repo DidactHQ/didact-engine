@@ -4,7 +4,9 @@ namespace DidactEngine.Services
 {
     public class DidactThreadPoolScheduler : TaskScheduler
     {
-        private readonly ThreadLocal<bool> _currentThreadIsExecuting = new();
+        private readonly ILogger<DidactThreadPoolScheduler> _logger;
+
+        private readonly ThreadLocal<bool> _currentThreadIsExecuting = new(false);
 
         private readonly int _maxDegreeOfParallelism;
 
@@ -12,21 +14,21 @@ namespace DidactEngine.Services
 
         private readonly ConcurrentQueue<Task> _tasks;
 
-        public DidactThreadPoolScheduler(int maxDegreeOfParallelism)
+        public DidactThreadPoolScheduler(ILogger<DidactThreadPoolScheduler> logger, int maxDegreeOfParallelism)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
             _maxDegreeOfParallelism = maxDegreeOfParallelism <= 0
                 ? throw new ArgumentOutOfRangeException(nameof(maxDegreeOfParallelism))
                 : maxDegreeOfParallelism;
 
-            // Do I need this?
-            _currentThreadIsExecuting.Value = false;
             _tasks = new ConcurrentQueue<Task>();
             _threads = new Thread[maxDegreeOfParallelism];
 
             // Configure each thread
             for (int i = 0; i < _maxDegreeOfParallelism; i++)
             {
-                _threads[i] = new Thread(() => { Console.WriteLine("Something"); })
+                _threads[i] = new Thread(() => ThreadExecutionLoop())
                 {
                     IsBackground = true,
                     Name = $"{nameof(DidactThreadPoolScheduler)} Thread {i}"
@@ -35,6 +37,34 @@ namespace DidactEngine.Services
 
             // Start each thread
             _threads.ToList().ForEach(t => t.Start());
+        }
+
+        private void ThreadExecutionLoop()
+        {
+            _currentThreadIsExecuting.Value = true;
+            var currentThreadName = Thread.CurrentThread.Name;
+
+            while (true)
+            {
+                try
+                {
+                    var taskDequeued = _tasks.TryDequeue(out var task);
+                    if (taskDequeued)
+                    {
+                        TryExecuteTask(task!);
+                    }
+                }
+                catch (ThreadInterruptedException ex)
+                {
+                    _logger.LogCritical("A {exName} occurred on thread {threadName}. See inner exception: {ex}", nameof(ThreadInterruptedException), currentThreadName, ex);
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogCritical("An unhandled exception occurred on thread {threadName}. See inner exception: {ex}", currentThreadName, ex);
+                    throw;
+                }
+            }
         }
 
         protected sealed override void QueueTask(Task task)
