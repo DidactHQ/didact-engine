@@ -8,6 +8,8 @@ namespace DidactEngine.Services
 
         private readonly ThreadLocal<bool> _currentThreadIsExecuting = new(false);
 
+        private readonly ThreadLocal<string> _currentThreadName = new();
+
         private readonly int _maxDegreeOfParallelism;
 
         private readonly Thread[] _threads;
@@ -42,7 +44,7 @@ namespace DidactEngine.Services
         private void ThreadExecutionLoop()
         {
             _currentThreadIsExecuting.Value = true;
-            var currentThreadName = Thread.CurrentThread.Name;
+            _currentThreadName.Value = Thread.CurrentThread.Name!;
 
             while (true)
             {
@@ -56,12 +58,12 @@ namespace DidactEngine.Services
                 }
                 catch (ThreadInterruptedException ex)
                 {
-                    _logger.LogCritical("A {exName} occurred on thread {threadName}. See inner exception: {ex}", nameof(ThreadInterruptedException), currentThreadName, ex);
+                    _logger.LogCritical("A {exName} occurred on thread {threadName}. See inner exception: {ex}", nameof(ThreadInterruptedException), _currentThreadName, ex);
                     throw;
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogCritical("An unhandled exception occurred on thread {threadName}. See inner exception: {ex}", currentThreadName, ex);
+                    _logger.LogCritical("An unhandled exception occurred on thread {threadName}. See inner exception: {ex}", _currentThreadName, ex);
                     throw;
                 }
             }
