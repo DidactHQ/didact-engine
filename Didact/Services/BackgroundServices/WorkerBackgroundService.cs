@@ -36,9 +36,9 @@ namespace DidactEngine.Services.BackgroundServices
             {
                 var taskList = new List<Task>();
                 var scheduler = ActivatorUtilities.CreateInstance<DidactThreadPoolScheduler>(_serviceProvider, Environment.ProcessorCount);
-                var taskFactory = new TaskFactory(scheduler);
+                var taskFactory = new TaskFactory(CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskContinuationOptions.None, scheduler);
 
-                for (int i = 0; i < 17; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     Task workerTask;
                     if (i == 0)
@@ -52,7 +52,7 @@ namespace DidactEngine.Services.BackgroundServices
                             {
                                 _logger.LogInformation("Task heartbeat from Task.Run{Guid} | {now} | {scheduler} | {threadId} | isThreadPoolThread: {tpt} | threadName: {threadName}",
                                     workerGuid.ToString(), DateTime.Now.ToLongTimeString(), TaskScheduler.Current, Thread.CurrentThread.ManagedThreadId, Thread.CurrentThread.IsThreadPoolThread, Thread.CurrentThread.Name);
-                                await Task.Delay(60000);
+                                await Task.Delay(3000);
                             }
                         });
                     }
@@ -68,7 +68,7 @@ namespace DidactEngine.Services.BackgroundServices
                             {
                                 _logger.LogInformation("Task heartbeat from Task.Run{Guid} | {now} | {scheduler} | {threadId} | isThreadPoolThread: {tpt} | threadName: {threadName}",
                                     workerGuid.ToString(), DateTime.Now.ToLongTimeString(), TaskScheduler.Current, Thread.CurrentThread.ManagedThreadId, Thread.CurrentThread.IsThreadPoolThread, Thread.CurrentThread.Name);
-                                await Task.Delay(60000);
+                                await Task.Delay(3000).ContinueWith((task) => { /*_logger.LogInformation("Continuing to custom scheduler...");*/ }, scheduler: scheduler);
                             }
                         });
                     }
@@ -83,7 +83,7 @@ namespace DidactEngine.Services.BackgroundServices
                 //    await Task.Delay(3000);
                 //}, CancellationToken.None, TaskCreationOptions.RunContinuationsAsynchronously, TaskScheduler.Default);
 
-                await Task.WhenAll(taskList);
+                //await Task.WhenAll(taskList);
             }
             catch (Exception ex)
             {
