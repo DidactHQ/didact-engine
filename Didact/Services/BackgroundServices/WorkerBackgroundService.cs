@@ -5,10 +5,12 @@ namespace DidactEngine.Services.BackgroundServices
     public class WorkerBackgroundService : BackgroundService
     {
         private readonly ILogger<WorkerBackgroundService> _logger;
+        private readonly IServiceProvider _serviceProvider;
 
-        public WorkerBackgroundService(ILogger<WorkerBackgroundService> logger)
+        public WorkerBackgroundService(ILogger<WorkerBackgroundService> logger, IServiceProvider serviceProvider)
         {
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -33,19 +35,43 @@ namespace DidactEngine.Services.BackgroundServices
             try
             {
                 var taskList = new List<Task>();
+                var scheduler = ActivatorUtilities.CreateInstance<DidactThreadPoolScheduler>(_serviceProvider, Environment.ProcessorCount);
+                var taskFactory = new TaskFactory(scheduler);
 
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 17; i++)
                 {
-                    var workerTask = Task.Run(async () =>
+                    Task workerTask;
+                    if (i == 0)
                     {
-                        var workerGuid = Guid.NewGuid();
-
-                        while (!stoppingToken.IsCancellationRequested)
+                        workerTask = Task.Run(async () =>
                         {
-                            _logger.LogInformation("Task heartbeat from Task.Run{Guid} | {now}", workerGuid.ToString(), DateTime.Now.ToLongTimeString());
-                            await Task.Delay(3000);
-                        }
-                    });
+                            var workerGuid = Guid.NewGuid();
+                            ThreadPool.GetMaxThreads(out var workerThreadCount, out var ioThreadCount);
+
+                            while (!stoppingToken.IsCancellationRequested)
+                            {
+                                _logger.LogInformation("Task heartbeat from Task.Run{Guid} | {now} | {scheduler} | {threadId} | isThreadPoolThread: {tpt} | threadName: {threadName}",
+                                    workerGuid.ToString(), DateTime.Now.ToLongTimeString(), TaskScheduler.Current, Thread.CurrentThread.ManagedThreadId, Thread.CurrentThread.IsThreadPoolThread, Thread.CurrentThread.Name);
+                                await Task.Delay(60000);
+                            }
+                        });
+                    }
+
+                    else
+                    {
+                        workerTask = taskFactory.StartNew(async () =>
+                        {
+                            var workerGuid = Guid.NewGuid();
+                            ThreadPool.GetMaxThreads(out var workerThreadCount, out var ioThreadCount);
+
+                            while (!stoppingToken.IsCancellationRequested)
+                            {
+                                _logger.LogInformation("Task heartbeat from Task.Run{Guid} | {now} | {scheduler} | {threadId} | isThreadPoolThread: {tpt} | threadName: {threadName}",
+                                    workerGuid.ToString(), DateTime.Now.ToLongTimeString(), TaskScheduler.Current, Thread.CurrentThread.ManagedThreadId, Thread.CurrentThread.IsThreadPoolThread, Thread.CurrentThread.Name);
+                                await Task.Delay(60000);
+                            }
+                        });
+                    }
 
                     _logger.LogInformation("Adding workerTask {i} to taskList", i.ToString());
                     taskList.Add(workerTask);
