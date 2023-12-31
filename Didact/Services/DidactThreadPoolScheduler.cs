@@ -23,6 +23,7 @@ namespace DidactEngine.Services
             _tasks = new ConcurrentQueue<Task>();
             _threads = new Thread[maxDegreeOfParallelism];
 
+            // Configure each thread
             for (int i = 0; i < _maxDegreeOfParallelism; i++)
             {
                 _threads[i] = new Thread(() => { Console.WriteLine("Something"); })
@@ -32,6 +33,7 @@ namespace DidactEngine.Services
                 };
             }
 
+            // Start each thread
             _threads.ToList().ForEach(t => t.Start());
         }
 
