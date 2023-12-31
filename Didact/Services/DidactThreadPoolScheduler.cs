@@ -44,13 +44,13 @@ namespace DidactEngine.Services
 
         protected sealed override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)
         {
-            // If the task was previously queued, we can't arbitrarily remove it from the FIFO queue.
+            // If the task was previously enqueued, we can't arbitrarily remove it from the FIFO queue.
             // So we just have to wait for it to be executed.
             if (taskWasPreviouslyQueued)
             {
                 return false;
             }
-            // If the task was not previously queued, go ahead and inline execute it.
+            // If the task was not previously enqueued, go ahead and inline execute it and skip the FIFO queue.
             else
             {
                 return TryExecuteTask(task);
