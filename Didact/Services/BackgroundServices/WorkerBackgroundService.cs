@@ -38,10 +38,10 @@ namespace DidactEngine.Services.BackgroundServices
                 var scheduler = ActivatorUtilities.CreateInstance<DidactThreadPoolScheduler>(_serviceProvider, Environment.ProcessorCount);
                 var taskFactory = new TaskFactory(CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskContinuationOptions.None, scheduler);
 
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     Task workerTask;
-                    if (i == 0)
+                    if (i == 10)
                     {
                         workerTask = Task.Run(async () =>
                         {
@@ -68,22 +68,19 @@ namespace DidactEngine.Services.BackgroundServices
                             {
                                 _logger.LogInformation("Task heartbeat from Task.Run{Guid} | {now} | {scheduler} | {threadId} | isThreadPoolThread: {tpt} | threadName: {threadName}",
                                     workerGuid.ToString(), DateTime.Now.ToLongTimeString(), TaskScheduler.Current, Thread.CurrentThread.ManagedThreadId, Thread.CurrentThread.IsThreadPoolThread, Thread.CurrentThread.Name);
-                                await Task.Delay(3000).ContinueWith((task) => { /*_logger.LogInformation("Continuing to custom scheduler...");*/ }, scheduler: scheduler);
+                                await Task.Delay(3000).ConfigureAwait(true);
+                                _logger.LogInformation("Recheck 1: Task Scheduler: {ts} | isThreadPoolThread: {tpt} | threadName: {threadName}", TaskScheduler.Current, Thread.CurrentThread.IsThreadPoolThread, Thread.CurrentThread.Name);
+                                await Task.Delay(3000).ContinueWith((task) => { }, scheduler: scheduler);
+                                _logger.LogInformation("Recheck 2: Task Scheduler: {ts} | isThreadPoolThread: {tpt} | threadName: {threadName}", TaskScheduler.Current, Thread.CurrentThread.IsThreadPoolThread, Thread.CurrentThread.Name);
                             }
-                        });
+                        }, CancellationToken.None, TaskCreationOptions.None, scheduler);
                     }
 
                     _logger.LogInformation("Adding workerTask {i} to taskList", i.ToString());
                     taskList.Add(workerTask);
                 }
 
-                //var newTask = Task.Factory.StartNew(async () =>
-                //{
-                //    _logger.LogInformation("Hi");
-                //    await Task.Delay(3000);
-                //}, CancellationToken.None, TaskCreationOptions.RunContinuationsAsynchronously, TaskScheduler.Default);
-
-                //await Task.WhenAll(taskList);
+                await Task.WhenAll(taskList);
             }
             catch (Exception ex)
             {
