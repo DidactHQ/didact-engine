@@ -29,13 +29,13 @@ namespace DidactEngine.Services.BackgroundServices
                     {
                         while (!stoppingToken.IsCancellationRequested)
                         {
-                            _logger.LogInformation("Task heartbeat. | threadName: {threadName} | isThreadPoolThread: {tpt} | scheduler: {scheduler}",
+                            _logger.LogInformation("Task heartbeat 1. | threadName: {threadName} | isThreadPoolThread: {tpt} | scheduler: {scheduler}",
                                 Thread.CurrentThread.Name, Thread.CurrentThread.IsThreadPoolThread, TaskScheduler.Current);
                             await Task.Delay(3000).ConfigureAwait(true);
-                            _logger.LogInformation("Task heartbeat. | threadName: {threadName} | isThreadPoolThread: {tpt} | scheduler: {scheduler}",
+                            _logger.LogInformation("Task heartbeat 2. | threadName: {threadName} | isThreadPoolThread: {tpt} | scheduler: {scheduler}",
                                 Thread.CurrentThread.Name, Thread.CurrentThread.IsThreadPoolThread, TaskScheduler.Current);
                             await Task.Delay(3000).ContinueWith((task) => { }, scheduler: scheduler);
-                            _logger.LogInformation("Task heartbeat. | threadName: {threadName} | isThreadPoolThread: {tpt} | scheduler: {scheduler}",
+                            _logger.LogInformation("Task heartbeat 3. | threadName: {threadName} | isThreadPoolThread: {tpt} | scheduler: {scheduler}",
                                 Thread.CurrentThread.Name, Thread.CurrentThread.IsThreadPoolThread, TaskScheduler.Current);
                         }
                     }, CancellationToken.None, TaskCreationOptions.None, scheduler);
