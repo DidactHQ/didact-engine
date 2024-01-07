@@ -1,4 +1,4 @@
-﻿namespace DidactEngine.Services
+﻿namespace DidactEngine.TaskSchedulers
 {
     // Provides a task scheduler that ensures a maximum concurrency level while
     // running on top of the thread pool.
@@ -70,7 +70,7 @@
                         }
 
                         // Execute the task we pulled out of the queue
-                        base.TryExecuteTask(item);
+                        TryExecuteTask(item);
                     }
                 }
                 // We're done processing items on the current thread
@@ -88,11 +88,11 @@
             if (taskWasPreviouslyQueued)
                 // Try to run the task.
                 if (TryDequeue(task))
-                    return base.TryExecuteTask(task);
+                    return TryExecuteTask(task);
                 else
                     return false;
             else
-                return base.TryExecuteTask(task);
+                return TryExecuteTask(task);
         }
 
         // Attempt to remove a previously scheduled task from the scheduler.

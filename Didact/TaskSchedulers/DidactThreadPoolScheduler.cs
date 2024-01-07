@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace DidactEngine.Services
+namespace DidactEngine.TaskSchedulers
 {
     public class DidactThreadPoolScheduler : TaskScheduler
     {
