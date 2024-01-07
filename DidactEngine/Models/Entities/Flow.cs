@@ -12,9 +12,7 @@
 
         public string? Version { get; set; }
 
-        public string AssemblyName { get; set; } = null!;
-
-        public string FullyQualifiedTypeName { get; set; } = null!;
+        public string FullyQualifiedType { get; set; } = null!;
 
         public int ConcurrencyLimit { get; set; }
 
