@@ -33,6 +33,8 @@ namespace DidactEngine.TaskSchedulers
                 _threads[i] = new Thread(() => ThreadExecutionLoop())
                 {
                     IsBackground = true,
+                    // Might need to modify this later to include MachineName and/or ProcessId for distributed environments.
+                    // That should only matter if saving logs in persistent storage. Otherwise, we won't worry about it for now.
                     Name = $"{nameof(DidactThreadPoolScheduler)} Thread {i}"
                 };
             }
