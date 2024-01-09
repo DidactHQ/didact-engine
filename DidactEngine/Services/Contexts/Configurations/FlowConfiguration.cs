@@ -12,8 +12,7 @@ namespace DidactEngine.Services.Contexts.Configurations
             entity.HasIndex(e => e.Name).IsUnique();
             entity.Property(e => e.Name).IsRequired().HasMaxLength(255);
             entity.Property(e => e.Version).HasMaxLength(255);
-            entity.Property(e => e.AssemblyName).IsRequired();
-            entity.Property(e => e.FullyQualifiedTypeName).IsRequired();
+            entity.Property(e => e.FullyQualifiedType).IsRequired();
             entity.Property(e => e.CreatedBy).HasMaxLength(255);
             entity.Property(e => e.LastUpdatedBy).HasMaxLength(255);
             entity.Property(e => e.Active).IsRequired().HasDefaultValue(true);

@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\Migrations\**" />
+    <Content Remove="Services\Migrations\**" />
+    <EmbeddedResource Remove="Services\Migrations\**" />
+    <None Remove="Services\Migrations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="7.0.8" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.8" />
@@ -23,7 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Migrations\" />
+    <Reference Include="DidactCore">
+      <HintPath>..\..\didact-core\DidactCore\bin\Debug\netstandard2.1\DidactCore.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

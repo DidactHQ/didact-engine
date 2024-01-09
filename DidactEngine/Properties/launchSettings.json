@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Didact": {
+    "DidactEngine": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

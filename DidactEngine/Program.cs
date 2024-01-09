@@ -1,5 +1,4 @@
 using DidactEngine.Hubs;
-using DidactEngine.Services;
 using DidactEngine.Services.BackgroundServices;
 using DidactEngine.Services.Contexts;
 using Microsoft.Data.SqlClient;
@@ -70,11 +69,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddEndpointsApiExplorer();
 
 // Register BackgroundServices
-builder.Services.AddHostedService<DatabaseEngineBackgroundService>();
-builder.Services.AddHostedService<AssemblyReaderBackgroundService>();
-
-builder.Services.AddSingleton<ExecutionManager>();
-builder.Services.AddSignalR();
+builder.Services.AddHostedService<WorkerBackgroundService>();
 
 var app = builder.Build();
 
@@ -89,7 +84,7 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-app.MapHub<BlockFlowStateMetricsHub>($"/hubs/{nameof(BlockFlowStateMetricsHub).ToLower()}");
+//app.MapHub<BlockFlowStateMetricsHub>($"/hubs/{nameof(BlockFlowStateMetricsHub).ToLower()}");
 
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 

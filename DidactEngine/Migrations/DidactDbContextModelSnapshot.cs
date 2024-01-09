@@ -270,10 +270,6 @@ namespace DidactEngine.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<string>("AssemblyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("ConcurrencyLimit")
                         .HasColumnType("int");
 
@@ -288,7 +284,7 @@ namespace DidactEngine.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FullyQualifiedTypeName")
+                    b.Property<string>("FullyQualifiedType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
