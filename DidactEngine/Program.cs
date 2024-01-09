@@ -84,7 +84,7 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-app.MapHub<BlockFlowStateMetricsHub>($"/hubs/{nameof(BlockFlowStateMetricsHub).ToLower()}");
+//app.MapHub<BlockFlowStateMetricsHub>($"/hubs/{nameof(BlockFlowStateMetricsHub).ToLower()}");
 
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
