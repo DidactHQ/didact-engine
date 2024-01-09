@@ -29,16 +29,34 @@ namespace DidactEngine.Services.BackgroundServices
                     {
                         while (!stoppingToken.IsCancellationRequested)
                         {
-                            _logger.LogInformation("Task heartbeat 1. | threadName: {threadName} | isThreadPoolThread: {tpt} | scheduler: {scheduler}",
-                                Thread.CurrentThread.Name, Thread.CurrentThread.IsThreadPoolThread, TaskScheduler.Current);
-                            await Task.Delay(3000).ConfigureAwait(true);
-                            _logger.LogInformation("Task heartbeat 2. | threadName: {threadName} | isThreadPoolThread: {tpt} | scheduler: {scheduler}",
-                                Thread.CurrentThread.Name, Thread.CurrentThread.IsThreadPoolThread, TaskScheduler.Current);
-                            await Task.Delay(3000).ContinueWith((task) => { }, scheduler: scheduler);
-                            _logger.LogInformation("Task heartbeat 3. | threadName: {threadName} | isThreadPoolThread: {tpt} | scheduler: {scheduler}",
-                                Thread.CurrentThread.Name, Thread.CurrentThread.IsThreadPoolThread, TaskScheduler.Current);
+                            /* Use taskFactory to create a second factory task inside the first factory task.
+                             * Here is why:
+                             * If a Flow uses ConfigureAwait(false) at any point, then when we execute the Flow, we lose our custom task scheduler and all of our custom threads until that chain of tasks completes.
+                             * We need a way to GUARANTEE that the next Flow STARTS BACK ONTO our custom task scheduler and our custom threads.
+                             * So we await the inner task, let it complete, and then start a new one for the next Flow execution.
+                             * ============================================================================
+                             * Think of this as an asynchronous context RESET between Flow executions.
+                             * ============================================================================
+                             * This is done infinitely inside of the first factory task's while loop, so it's an infinite parent task that continues Flow executions. */
+                            await taskFactory.StartNew(async () =>
+                            {
+                                _logger.LogInformation("Task heartbeat 1. | threadName: {threadName} | isThreadPoolThread: {tpt} | scheduler: {scheduler}",
+                                    Thread.CurrentThread.Name, Thread.CurrentThread.IsThreadPoolThread, TaskScheduler.Current);
+
+                                await Task.Delay(3000);
+
+                                _logger.LogInformation("Task heartbeat 2. | threadName: {threadName} | isThreadPoolThread: {tpt} | scheduler: {scheduler}",
+                                    Thread.CurrentThread.Name, Thread.CurrentThread.IsThreadPoolThread, TaskScheduler.Current);
+
+                                await Task.Delay(3000).ConfigureAwait(false);
+
+                                _logger.LogInformation("Task heartbeat 3. | threadName: {threadName} | isThreadPoolThread: {tpt} | scheduler: {scheduler}",
+                                    Thread.CurrentThread.Name, Thread.CurrentThread.IsThreadPoolThread, TaskScheduler.Current);
+
+                                await Task.Delay(3000);
+                            }, CancellationToken.None, TaskCreationOptions.DenyChildAttach, scheduler).Unwrap(); // Make sure to Unwrap the task so that we await the inner task, not the factory task.
                         }
-                    }, CancellationToken.None, TaskCreationOptions.None, scheduler);
+                    }, CancellationToken.None, TaskCreationOptions.DenyChildAttach, scheduler);
 
                     _logger.LogInformation("Adding workerTask {i} to taskList", i.ToString());
                     taskList.Add(workerTask);
