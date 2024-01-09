@@ -76,6 +76,11 @@ namespace DidactEngine.TaskSchedulers
 
         protected sealed override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)
         {
+            // IMPORTANT: This was a difficult requirement that was not intuitive to me.
+            // We have to PREVENT .NET ThreadPool threads from executing inline Tasks, so check if the CurrentThread is a Didact thread.
+            // If it is not, stop it from executing by returning false.
+            if (_threads.SingleOrDefault(t => t == Thread.CurrentThread) is null) return false;
+
             // If the task was previously enqueued, we can't arbitrarily remove it from the FIFO queue.
             // So we just have to wait for it to be executed.
             if (taskWasPreviouslyQueued)
