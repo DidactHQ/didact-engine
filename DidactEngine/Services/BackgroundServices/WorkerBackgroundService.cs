@@ -1,4 +1,5 @@
-﻿using DidactEngine.TaskSchedulers;
+﻿using DidactCore.Flows;
+using DidactEngine.TaskSchedulers;
 
 namespace DidactEngine.Services.BackgroundServices
 {
@@ -6,11 +7,15 @@ namespace DidactEngine.Services.BackgroundServices
     {
         private readonly ILogger<WorkerBackgroundService> _logger;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IFlowRepository _flowRepository;
+        private readonly IFlowReflector _flowReflector;
 
-        public WorkerBackgroundService(ILogger<WorkerBackgroundService> logger, IServiceProvider serviceProvider)
+        public WorkerBackgroundService(ILogger<WorkerBackgroundService> logger, IServiceProvider serviceProvider, IFlowRepository flowRepository, IFlowReflector flowReflector)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _flowRepository = flowRepository ?? throw new ArgumentNullException(nameof(flowRepository));
+            _flowReflector = flowReflector ?? throw new ArgumentNullException(nameof(flowReflector));
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
