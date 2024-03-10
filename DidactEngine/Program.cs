@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using DidactCore.Flows;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,6 +70,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 // Register BackgroundServices
 builder.Services.AddHostedService<WorkerBackgroundService>();
+builder.Services.AddSingleton<IFlowReflector, FlowReflector>();
 
 var app = builder.Build();
 
