@@ -12,7 +12,7 @@
 
         public string? Version { get; set; }
 
-        public string FullyQualifiedType { get; set; } = null!;
+        public string TypeName { get; set; } = null!;
 
         public int ConcurrencyLimit { get; set; }
 
