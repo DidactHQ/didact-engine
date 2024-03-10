@@ -1,4 +1,3 @@
-using DidactEngine.Hubs;
 using DidactEngine.Services.BackgroundServices;
 using DidactEngine.Services.Contexts;
 using Microsoft.Data.SqlClient;
@@ -84,7 +83,6 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-//app.MapHub<BlockFlowStateMetricsHub>($"/hubs/{nameof(BlockFlowStateMetricsHub).ToLower()}");
 
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
