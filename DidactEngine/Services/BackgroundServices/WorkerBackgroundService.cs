@@ -8,14 +8,14 @@ namespace DidactEngine.Services.BackgroundServices
         private readonly ILogger<WorkerBackgroundService> _logger;
         private readonly IServiceProvider _serviceProvider;
         private readonly IFlowRepository _flowRepository;
-        private readonly IFlowReflector _flowReflector;
+        private readonly IFlowExecutor _flowExecutor;
 
-        public WorkerBackgroundService(ILogger<WorkerBackgroundService> logger, IServiceProvider serviceProvider, IFlowRepository flowRepository, IFlowReflector flowReflector)
+        public WorkerBackgroundService(ILogger<WorkerBackgroundService> logger, IServiceProvider serviceProvider, IFlowRepository flowRepository, IFlowExecutor flowExecutor)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _flowRepository = flowRepository ?? throw new ArgumentNullException(nameof(flowRepository));
-            _flowReflector = flowReflector ?? throw new ArgumentNullException(nameof(flowReflector));
+            _flowExecutor = flowExecutor ?? throw new ArgumentNullException(nameof(flowExecutor));
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

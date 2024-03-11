@@ -70,7 +70,10 @@ builder.Services.AddEndpointsApiExplorer();
 
 // Register BackgroundServices
 builder.Services.AddHostedService<WorkerBackgroundService>();
-builder.Services.AddSingleton<IFlowReflector, FlowReflector>();
+// Register Flow helper services from DidactCore.
+builder.Services.AddSingleton<IFlowExecutor, FlowExecutor>();
+// Register repositories from DidactCore.
+builder.Services.AddScoped<IFlowRepository>();
 
 var app = builder.Build();
 
