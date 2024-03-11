@@ -59,7 +59,18 @@ namespace DidactEngine.Services.Contexts
                     TrustServerCertificate = true
                 };
 
-                optionsBuilder.UseSqlServer(csBuilder.ConnectionString);
+                var databaseProvider = configuration.GetSection("Didact").GetValue<string>("DatabaseProvider");
+                switch (databaseProvider)
+                {
+                    case "SqlServer":
+                        optionsBuilder.UseSqlServer(csBuilder.ConnectionString);
+                        break;
+                    case "PostgreSQL":
+                        //optionsBuilder.UsePostgreSQL
+                    default:
+                        optionsBuilder.UseSqlServer(csBuilder.ConnectionString);
+                        break;
+                }
             }
         }
 
