@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using DidactEngine.Models.Entities;
+using DidactCore.Entities;
 
 namespace DidactEngine.Services.Contexts.Configurations
 {

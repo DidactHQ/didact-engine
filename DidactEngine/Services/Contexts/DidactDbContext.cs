@@ -1,4 +1,4 @@
-﻿using DidactEngine.Models.Entities;
+﻿using DidactCore.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
