@@ -45,6 +45,12 @@ namespace DidactEngine.Services.BackgroundServices
                              * This is done infinitely inside of the first factory task's while loop, so it's an infinite parent task that continues Flow executions. */
                             await taskFactory.StartNew(async () =>
                             {
+                                /* Actual Flow steps:
+                                 * 1. Get the Flow from a Queue and FlowRun.
+                                 * 2. Create a Flow instance from the Flow.
+                                 * 3. Execute the Flow instance.
+                                 * */
+
                                 _logger.LogInformation("Task heartbeat 1. | threadName: {threadName} | isThreadPoolThread: {tpt} | scheduler: {scheduler}",
                                     Thread.CurrentThread.Name, Thread.CurrentThread.IsThreadPoolThread, TaskScheduler.Current);
 
