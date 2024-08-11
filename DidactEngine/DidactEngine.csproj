@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.5" />
@@ -22,6 +23,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.5" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\didact-core\DidactCore\DidactCore.csproj" />
+	  <!--<projectreference Include="C:\Development\Didact\Repos\didact-core\DidactCore\DidactCore.csproj" />-->
+    <!--<ProjectReference Include="..\..\didact-core\DidactCore\DidactCore.csproj" />-->
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="DidactCore">
+      <HintPath>..\..\didact-core\DidactCore\bin\Debug\net8.0\DidactCore.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

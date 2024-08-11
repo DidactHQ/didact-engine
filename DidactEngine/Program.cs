@@ -6,6 +6,9 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using DidactCore.Flows;
+using DidactCore.DependencyInjection;
+using DidactCore.Engine;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,12 +71,41 @@ builder.Services.AddSwaggerGen(options =>
 });
 builder.Services.AddEndpointsApiExplorer();
 
+//builder.Services.AddSingleton<ILogger>();
+
+builder.Services.AddLogging();
+
 // Register BackgroundServices
 builder.Services.AddHostedService<WorkerBackgroundService>();
+
+builder.Services.AddSingleton<IEngineSupervisor, EngineSupervisor>();
 // Register Flow helper services from DidactCore.
 builder.Services.AddSingleton<IFlowExecutor, FlowExecutor>();
 // Register repositories from DidactCore.
-builder.Services.AddScoped<IFlowRepository>();
+builder.Services.AddSingleton<IFlowRepository, FlowRepository>();
+// Register the FlowLogger from DidactCore.
+builder.Services.AddSingleton<IFlowLogger, FlowLogger>();
+builder.Services.AddSingleton<IFlowConfigurator, FlowConfigurator>();
+
+
+//builder.Services.AddSingleton<IDidactDependencyInjector, DidactDependencyInjector>();
+
+builder.Services.AddSingleton<IDidactDependencyInjector>(provider =>
+{
+    return new DidactDependencyInjector(builder.Services);
+});
+
+
+// Register the DidactDependencyInjector from DidactCore.
+//var didactDependencyInjector = new DidactDependencyInjector(builder.Services);
+
+//builder.Services.AddSingleton(provider =>
+//        new DidactDependencyInjector(builder.Services));
+
+
+
+
+//builder.Services.AddSingleton(didactDependencyInjector);
 
 var app = builder.Build();
 
