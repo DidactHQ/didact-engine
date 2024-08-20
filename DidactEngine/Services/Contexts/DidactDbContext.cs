@@ -18,6 +18,8 @@ namespace DidactEngine.Services.Contexts
 
         public virtual DbSet<FlowRun> FlowRuns { get; set; } = null!;
 
+        public virtual DbSet<BlockRun> BlockRuns { get; set; } = null!;
+
         public virtual DbSet<FlowSchedule> FlowSchedules { get; set; } = null!;
 
         public virtual DbSet<Organization> Organizations { get; set; } = null!;
@@ -88,6 +90,7 @@ namespace DidactEngine.Services.Contexts
             modelBuilder.ApplyConfiguration(new Configurations.TriggerTypeConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.StateConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.EngineConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.BlockRunConfiguration());
 
             OnModelCreatingPartial(modelBuilder);
         }

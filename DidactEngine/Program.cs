@@ -75,25 +75,26 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddLogging();
 
-// Register BackgroundServices
-builder.Services.AddHostedService<WorkerBackgroundService>();
-
-builder.Services.AddSingleton<IEngineSupervisor, EngineSupervisor>();
+builder.Services.AddScoped<IEngineSupervisor, EngineSupervisor>();
 // Register Flow helper services from DidactCore.
-builder.Services.AddSingleton<IFlowExecutor, FlowExecutor>();
+builder.Services.AddScoped<IFlowExecutor, FlowExecutor>();
 // Register repositories from DidactCore.
-builder.Services.AddSingleton<IFlowRepository, FlowRepository>();
+builder.Services.AddScoped<IFlowRepository, FlowRepository>();
 // Register the FlowLogger from DidactCore.
-builder.Services.AddSingleton<IFlowLogger, FlowLogger>();
-builder.Services.AddSingleton<IFlowConfigurator, FlowConfigurator>();
+builder.Services.AddScoped<IFlowLogger, FlowLogger>();
+builder.Services.AddScoped<IFlowConfigurator, FlowConfigurator>();
 
 
 //builder.Services.AddSingleton<IDidactDependencyInjector, DidactDependencyInjector>();
 
-builder.Services.AddSingleton<IDidactDependencyInjector>(provider =>
+builder.Services.AddScoped<IDidactDependencyInjector>(provider =>
 {
     return new DidactDependencyInjector(builder.Services);
 });
+
+
+// Register BackgroundServices
+builder.Services.AddHostedService<WorkerBackgroundService>();
 
 
 // Register the DidactDependencyInjector from DidactCore.

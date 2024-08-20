@@ -22,23 +22,23 @@ namespace DidactEngine.Services.Contexts.Configurations
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName($"FK_{nameof(FlowRun)}_{nameof(Flow)}");
 
-            entity.HasOne(d => d.Organization)
-                .WithMany(p => p.FlowRuns)
-                .HasForeignKey(d => d.OrganizationId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName($"FK_{nameof(FlowRun)}_{nameof(Organization)}");
+            //entity.HasOne(d => d.Organization)
+            //    .WithMany(p => p.FlowRuns)
+            //    .HasForeignKey(d => d.OrganizationId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName($"FK_{nameof(FlowRun)}_{nameof(Organization)}");
 
-            entity.HasOne(d => d.TriggerType)
-                .WithMany(p => p.FlowRuns)
-                .HasForeignKey(d => d.TriggerTypeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName($"FK_{nameof(FlowRun)}_{nameof(TriggerType)}");
+            //entity.HasOne(d => d.TriggerType)
+            //    .WithMany(p => p.FlowRuns)
+            //    .HasForeignKey(d => d.TriggerTypeId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName($"FK_{nameof(FlowRun)}_{nameof(TriggerType)}");
 
-            entity.HasOne(d => d.State)
-                .WithMany(p => p.FlowRuns)
-                .HasForeignKey(d => d.StateId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName($"FK_{nameof(FlowRun)}_{nameof(State)}");
+            //entity.HasOne(d => d.State)
+            //    .WithMany(p => p.FlowRuns)
+            //    .HasForeignKey(d => d.StateId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName($"FK_{nameof(FlowRun)}_{nameof(State)}");
 
             OnConfigurePartial(entity);
         }

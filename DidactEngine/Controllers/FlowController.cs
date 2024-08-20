@@ -4,10 +4,10 @@ using DidactCore.Constants;
 using DidactCore.DependencyInjection;
 using DidactCore.Entities;
 using DidactCore.Flows;
+using DidactEngine.Services.Contexts;
 using DidactEngine.Services.Contexts.Configurations;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-//using System.Threading.Tasks.Dataflow;
 
 namespace DidactEngine.Controllers
 {
@@ -20,14 +20,16 @@ namespace DidactEngine.Controllers
         private readonly IFlowLogger _flowLogger;
         private readonly IFlowConfigurator _flowConfigurator;
         private readonly IDidactDependencyInjector _didactDependencyInjector;
+        private readonly IFlowRepository _flowRepository;
 
-        public FlowController(ILogger<MaintenanceController> logger, IHostApplicationLifetime hostApplicationLifetime, IFlowExecutor flowExecutor, IFlowLogger flowLogger, IFlowConfigurator flowConfigurator, IDidactDependencyInjector didactDependencyInjector)
+        public FlowController(ILogger<MaintenanceController> logger, IHostApplicationLifetime hostApplicationLifetime, IFlowExecutor flowExecutor, IFlowLogger flowLogger, IFlowConfigurator flowConfigurator, IDidactDependencyInjector didactDependencyInjector, IFlowRepository flowRepository)
         {
             _hostApplicationLifetime = hostApplicationLifetime;
             _flowExecutor = flowExecutor;
             _flowLogger = flowLogger;
             _flowConfigurator = flowConfigurator;
             _didactDependencyInjector = didactDependencyInjector;
+            _flowRepository = flowRepository;
         }
 
         /// <summary>
@@ -38,7 +40,8 @@ namespace DidactEngine.Controllers
         [SwaggerResponse(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetFlowsAsync()
         {
-            throw new NotImplementedException();
+            var flows = await _flowRepository.GetAllFlowsFromStorageAsync();
+            return Ok(flows);
         }
 
         /// <summary>
@@ -49,7 +52,8 @@ namespace DidactEngine.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, type: typeof(string))]
         public async Task<IActionResult> GetFlowByNameAsync()
         {
-            throw new NotImplementedException();
+            var flow = await _flowRepository.GetFlowByNameAsync("TestFlow");
+            return Ok(flow);
         }
 
         /// <summary>
@@ -61,9 +65,13 @@ namespace DidactEngine.Controllers
         public async Task<IActionResult> CreateFlowAsync()
         {
             SomeFlow someFlow = new SomeFlow(_flowLogger, _flowConfigurator, _didactDependencyInjector);
-            await someFlow.ExecuteAsync("json test string running inside action task block in a flow run");
+            await _flowRepository.SaveConfigurationsAsync(_flowConfigurator);
 
             return Accepted();
+
+            // await someFlow.ExecuteAsync("json test string running inside action task block in a flow run");
+
+            
 
             //Flow flow = new Flow();
             //flow.Name = "TestFlow";

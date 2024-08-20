@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -8,10 +9,10 @@
     <UserSecretsId>8bccdc4b-2bdb-4817-a72e-bdd5935343db</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Services\Migrations\**" />
+    <!--<Compile Remove="Services\Migrations\**" />
     <Content Remove="Services\Migrations\**" />
     <EmbeddedResource Remove="Services\Migrations\**" />
-    <None Remove="Services\Migrations\**" />
+    <None Remove="Services\Migrations\**" />-->
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
@@ -23,8 +24,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.5" />
   </ItemGroup>
   <ItemGroup>
-	  <!--<projectreference Include="C:\Development\Didact\Repos\didact-core\DidactCore\DidactCore.csproj" />-->
-    <!--<ProjectReference Include="..\..\didact-core\DidactCore\DidactCore.csproj" />-->
+   
+    <Content Include="Services\FlowRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DidactCore">
