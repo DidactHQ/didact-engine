@@ -34,6 +34,12 @@ namespace DidactEngine.Services.Contexts.Configurations
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName($"FK_{nameof(FlowRun)}_{nameof(TriggerType)}");
 
+            entity.HasOne(d => d.ExecutionMode)
+                .WithMany(p => p.FlowRuns)
+                .HasForeignKey(d => d.ExecutionModeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName($"FK_{nameof(FlowRun)}_{nameof(ExecutionMode)}");
+
             entity.HasOne(d => d.State)
                 .WithMany(p => p.FlowRuns)
                 .HasForeignKey(d => d.StateId)
