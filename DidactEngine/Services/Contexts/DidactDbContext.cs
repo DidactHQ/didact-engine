@@ -32,6 +32,8 @@ namespace DidactEngine.Services.Contexts
 
         public virtual DbSet<TriggerType> TriggerTypes { get; set; } = null!;
 
+        public virtual DbSet<ExecutionMode> ExecutionModes { get; set; } = null!;
+
         public virtual DbSet<Engine> Engines { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
