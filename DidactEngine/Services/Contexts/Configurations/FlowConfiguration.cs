@@ -24,6 +24,12 @@ namespace DidactEngine.Services.Contexts.Configurations
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName($"FK_{nameof(Flow)}_{nameof(Organization)}");
 
+            entity.HasOne(d => d.ExecutionMode)
+                .WithMany(p => p.Flows)
+                .HasForeignKey(d => d.ExecutionModeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName($"FK_{nameof(Flow)}_{nameof(ExecutionMode)}");
+
             OnConfigurePartial(entity);
         }
 
