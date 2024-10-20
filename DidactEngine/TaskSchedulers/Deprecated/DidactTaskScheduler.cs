@@ -1,4 +1,4 @@
-﻿namespace DidactEngine.TaskSchedulers
+﻿namespace DidactEngine.TaskSchedulers.Deprecated
 {
     // Provides a task scheduler that ensures a maximum concurrency level while
     // running on top of the thread pool.
