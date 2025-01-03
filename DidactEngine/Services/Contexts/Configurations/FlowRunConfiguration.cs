@@ -10,7 +10,7 @@ namespace DidactEngine.Services.Contexts.Configurations
         {
             entity.ToTable(nameof(FlowRun));
             entity.Property(e => e.Name).IsRequired().HasMaxLength(255);
-            //entity.Property(e => e.StateLastUpdatedBy).HasMaxLength(255);
+            entity.Property(e => e.StateLastUpdatedBy).HasMaxLength(255);
             entity.Property(e => e.CreatedBy).HasMaxLength(255);
             entity.Property(e => e.LastUpdatedBy).HasMaxLength(255);
             entity.Property(e => e.Active).IsRequired().HasDefaultValue(true);
