@@ -94,6 +94,14 @@ namespace DidactEngine.Services.Contexts
             modelBuilder.ApplyConfiguration(new Configurations.EngineConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.BlockRunConfiguration());
 
+            // Apply the necessary changes to the FlowRun table to avoid cycles or multiple cascade paths
+            modelBuilder.Entity<FlowRun>()
+                .HasOne(d => d.Flow)
+                .WithMany(p => p.FlowRuns)
+                .HasForeignKey(d => d.FlowId)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasConstraintName($"FK_{nameof(FlowRun)}_{nameof(Flow)}");
+
             OnModelCreatingPartial(modelBuilder);
         }
 
