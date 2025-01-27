@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using DidactCore.Entities;
 
@@ -24,6 +24,8 @@ namespace DidactEngine.Services.Contexts.Configurations
                 .HasForeignKey(d => d.OrganizationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName($"FK_{nameof(Flow)}_{nameof(Organization)}");
+
+          
 
             OnConfigurePartial(entity);
         }

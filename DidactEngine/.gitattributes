@@ -1,0 +1,9 @@
+# Enforce LF for all text files
+* text=auto
+*.cs eol=lf
+*.json eol=lf
+*.xml eol=lf
+
+# Binary files (no line ending conversion)
+*.png binary
+*.jpg binary

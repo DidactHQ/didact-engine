@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DidactEngine.Migrations
 {
     [DbContext(typeof(DidactDbContext))]
-    [Migration("20240816094323_Initial Schema")]
-    partial class InitialSchema
+    [Migration("20250127224410_small fix 3")]
+    partial class smallfix3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -495,8 +495,6 @@ namespace DidactEngine.Migrations
 
                     b.HasIndex("FlowId");
 
-                    b.HasIndex("OrganizationId");
-
                     b.HasIndex("ScheduleTypeId");
 
                     b.ToTable("FlowSchedule", (string)null);
@@ -548,8 +546,6 @@ namespace DidactEngine.Migrations
                     b.HasKey("FlowVersionId");
 
                     b.HasIndex("FlowId");
-
-                    b.HasIndex("OrganizationId");
 
                     b.ToTable("FlowVersion");
                 });
@@ -862,10 +858,10 @@ namespace DidactEngine.Migrations
                         .HasForeignKey("OrganizationId");
 
                     b.HasOne("DidactCore.Entities.State", "State")
-                        .WithMany("BlockRuns")
+                        .WithMany()
                         .HasForeignKey("StateId")
-                        .IsRequired()
-                        .HasConstraintName("FK_BlockRun_State");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("FlowRun");
 
@@ -946,27 +942,25 @@ namespace DidactEngine.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DidactCore.Entities.Organization", "Organization")
+                    b.HasOne("DidactCore.Entities.Organization", null)
                         .WithMany("FlowRuns")
                         .HasForeignKey("OrganizationId")
-                        .IsRequired()
-                        .HasConstraintName("FK_FlowRun_Organization");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DidactCore.Entities.State", "State")
-                        .WithMany("FlowRuns")
+                        .WithMany()
                         .HasForeignKey("StateId")
-                        .IsRequired()
-                        .HasConstraintName("FK_FlowRun_State");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DidactCore.Entities.TriggerType", "TriggerType")
-                        .WithMany("FlowRuns")
+                        .WithMany()
                         .HasForeignKey("TriggerTypeId")
-                        .IsRequired()
-                        .HasConstraintName("FK_FlowRun_TriggerType");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Flow");
-
-                    b.Navigation("Organization");
 
                     b.Navigation("State");
 
@@ -981,12 +975,6 @@ namespace DidactEngine.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DidactCore.Entities.Organization", "Organization")
-                        .WithMany()
-                        .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("DidactCore.Entities.ScheduleType", "ScheduleType")
                         .WithMany()
                         .HasForeignKey("ScheduleTypeId")
@@ -994,8 +982,6 @@ namespace DidactEngine.Migrations
                         .IsRequired();
 
                     b.Navigation("Flow");
-
-                    b.Navigation("Organization");
 
                     b.Navigation("ScheduleType");
                 });
@@ -1008,15 +994,7 @@ namespace DidactEngine.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DidactCore.Entities.Organization", "Organization")
-                        .WithMany()
-                        .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Flow");
-
-                    b.Navigation("Organization");
                 });
 
             modelBuilder.Entity("DidactCore.Entities.HyperQueue", b =>
@@ -1105,18 +1083,6 @@ namespace DidactEngine.Migrations
                     b.Navigation("HyperQueueInbounds");
 
                     b.Navigation("HyperQueues");
-                });
-
-            modelBuilder.Entity("DidactCore.Entities.State", b =>
-                {
-                    b.Navigation("BlockRuns");
-
-                    b.Navigation("FlowRuns");
-                });
-
-            modelBuilder.Entity("DidactCore.Entities.TriggerType", b =>
-                {
-                    b.Navigation("FlowRuns");
                 });
 #pragma warning restore 612, 618
         }

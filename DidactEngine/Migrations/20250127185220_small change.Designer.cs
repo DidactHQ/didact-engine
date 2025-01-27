@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DidactEngine.Migrations
 {
     [DbContext(typeof(DidactDbContext))]
-    [Migration("20240816094323_Initial Schema")]
-    partial class InitialSchema
+    [Migration("20250127185220_small change")]
+    partial class smallchange
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -166,6 +166,47 @@ namespace DidactEngine.Migrations
                     b.ToTable("Engine", (string)null);
                 });
 
+            modelBuilder.Entity("DidactCore.Entities.ExecutionMode", b =>
+                {
+                    b.Property<int>("ExecutionModeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExecutionModeId"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("ExecutionModeId");
+
+                    b.ToTable("ExecutionMode");
+                });
+
             modelBuilder.Entity("DidactCore.Entities.FifoQueue", b =>
                 {
                     b.Property<int>("FifoQueueId")
@@ -301,6 +342,9 @@ namespace DidactEngine.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ExecutionModeId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
 
@@ -328,6 +372,8 @@ namespace DidactEngine.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("FlowId");
+
+                    b.HasIndex("ExecutionModeId");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -366,6 +412,9 @@ namespace DidactEngine.Migrations
 
                     b.Property<DateTime?>("ExecutionEnded")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("ExecutionModeId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ExecutionStarted")
                         .HasColumnType("datetime2");
@@ -422,6 +471,8 @@ namespace DidactEngine.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("FlowRunId");
+
+                    b.HasIndex("ExecutionModeId");
 
                     b.HasIndex("FlowId");
 
@@ -495,8 +546,6 @@ namespace DidactEngine.Migrations
 
                     b.HasIndex("FlowId");
 
-                    b.HasIndex("OrganizationId");
-
                     b.HasIndex("ScheduleTypeId");
 
                     b.ToTable("FlowSchedule", (string)null);
@@ -548,8 +597,6 @@ namespace DidactEngine.Migrations
                     b.HasKey("FlowVersionId");
 
                     b.HasIndex("FlowId");
-
-                    b.HasIndex("OrganizationId");
 
                     b.ToTable("FlowVersion");
                 });
@@ -862,10 +909,10 @@ namespace DidactEngine.Migrations
                         .HasForeignKey("OrganizationId");
 
                     b.HasOne("DidactCore.Entities.State", "State")
-                        .WithMany("BlockRuns")
+                        .WithMany()
                         .HasForeignKey("StateId")
-                        .IsRequired()
-                        .HasConstraintName("FK_BlockRun_State");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("FlowRun");
 
@@ -923,17 +970,31 @@ namespace DidactEngine.Migrations
 
             modelBuilder.Entity("DidactCore.Entities.Flow", b =>
                 {
+                    b.HasOne("DidactCore.Entities.ExecutionMode", "ExecutionMode")
+                        .WithMany("Flows")
+                        .HasForeignKey("ExecutionModeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DidactCore.Entities.Organization", "Organization")
                         .WithMany("Flows")
                         .HasForeignKey("OrganizationId")
                         .IsRequired()
                         .HasConstraintName("FK_Flow_Organization");
 
+                    b.Navigation("ExecutionMode");
+
                     b.Navigation("Organization");
                 });
 
             modelBuilder.Entity("DidactCore.Entities.FlowRun", b =>
                 {
+                    b.HasOne("DidactCore.Entities.ExecutionMode", "ExecutionMode")
+                        .WithMany("FlowRuns")
+                        .HasForeignKey("ExecutionModeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DidactCore.Entities.Flow", "Flow")
                         .WithMany("FlowRuns")
                         .HasForeignKey("FlowId")
@@ -946,27 +1007,27 @@ namespace DidactEngine.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DidactCore.Entities.Organization", "Organization")
+                    b.HasOne("DidactCore.Entities.Organization", null)
                         .WithMany("FlowRuns")
                         .HasForeignKey("OrganizationId")
-                        .IsRequired()
-                        .HasConstraintName("FK_FlowRun_Organization");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DidactCore.Entities.State", "State")
-                        .WithMany("FlowRuns")
+                        .WithMany()
                         .HasForeignKey("StateId")
-                        .IsRequired()
-                        .HasConstraintName("FK_FlowRun_State");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DidactCore.Entities.TriggerType", "TriggerType")
-                        .WithMany("FlowRuns")
+                        .WithMany()
                         .HasForeignKey("TriggerTypeId")
-                        .IsRequired()
-                        .HasConstraintName("FK_FlowRun_TriggerType");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExecutionMode");
 
                     b.Navigation("Flow");
-
-                    b.Navigation("Organization");
 
                     b.Navigation("State");
 
@@ -981,12 +1042,6 @@ namespace DidactEngine.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DidactCore.Entities.Organization", "Organization")
-                        .WithMany()
-                        .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("DidactCore.Entities.ScheduleType", "ScheduleType")
                         .WithMany()
                         .HasForeignKey("ScheduleTypeId")
@@ -994,8 +1049,6 @@ namespace DidactEngine.Migrations
                         .IsRequired();
 
                     b.Navigation("Flow");
-
-                    b.Navigation("Organization");
 
                     b.Navigation("ScheduleType");
                 });
@@ -1008,15 +1061,7 @@ namespace DidactEngine.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DidactCore.Entities.Organization", "Organization")
-                        .WithMany()
-                        .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Flow");
-
-                    b.Navigation("Organization");
                 });
 
             modelBuilder.Entity("DidactCore.Entities.HyperQueue", b =>
@@ -1055,6 +1100,13 @@ namespace DidactEngine.Migrations
                     b.Navigation("HyperQueue");
 
                     b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("DidactCore.Entities.ExecutionMode", b =>
+                {
+                    b.Navigation("FlowRuns");
+
+                    b.Navigation("Flows");
                 });
 
             modelBuilder.Entity("DidactCore.Entities.FifoQueue", b =>
@@ -1105,18 +1157,6 @@ namespace DidactEngine.Migrations
                     b.Navigation("HyperQueueInbounds");
 
                     b.Navigation("HyperQueues");
-                });
-
-            modelBuilder.Entity("DidactCore.Entities.State", b =>
-                {
-                    b.Navigation("BlockRuns");
-
-                    b.Navigation("FlowRuns");
-                });
-
-            modelBuilder.Entity("DidactCore.Entities.TriggerType", b =>
-                {
-                    b.Navigation("FlowRuns");
                 });
 #pragma warning restore 612, 618
         }

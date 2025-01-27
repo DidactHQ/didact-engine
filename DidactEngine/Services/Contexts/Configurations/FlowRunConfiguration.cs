@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using DidactCore.Entities;
+using System.Reflection.Emit;
 
 namespace DidactEngine.Services.Contexts.Configurations
 {
@@ -21,6 +22,11 @@ namespace DidactEngine.Services.Contexts.Configurations
                 .HasForeignKey(d => d.FlowId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName($"FK_{nameof(FlowRun)}_{nameof(Flow)}");
+
+            entity.HasOne(fr => fr.ExecutionMode)
+            .WithMany(em => em.FlowRuns)
+            .HasForeignKey(fr => fr.ExecutionModeId)
+            .OnDelete(DeleteBehavior.NoAction);
 
             //entity.HasOne(d => d.Organization)
             //    .WithMany(p => p.FlowRuns)
