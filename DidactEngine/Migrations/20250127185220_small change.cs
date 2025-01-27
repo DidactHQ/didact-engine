@@ -109,7 +109,7 @@ namespace DidactEngine.Migrations
                 column: "ExecutionModeId",
                 principalTable: "ExecutionMode",
                 principalColumn: "ExecutionModeId",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_FlowRun_Organization_OrganizationId",
