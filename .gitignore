@@ -70,6 +70,11 @@ ScaffoldingReadMe.txt
 StyleCopReport.xml
 
 # Files built by Visual Studio
+DidactEngine/obj/
+DidactEngine/bin/
+
+obj/
+bin/
 *_i.c
 *_p.c
 *_h.h
