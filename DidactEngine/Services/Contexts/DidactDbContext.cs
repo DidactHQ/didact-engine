@@ -52,6 +52,8 @@ namespace DidactEngine.Services.Contexts
                     throw new ArgumentNullException("A connection string was not found for the Didact database.");
                 }
 
+                var connectionString2 = Environment.GetEnvironmentVariable("DidactConnectionString", EnvironmentVariableTarget.User);
+
                 var csBuilder = new SqlConnectionStringBuilder(connectionString)
                 {
                     ApplicationName = "Didact",
@@ -65,7 +67,7 @@ namespace DidactEngine.Services.Contexts
                 switch (databaseProvider)
                 {
                     case "SqlServer":
-                        optionsBuilder.UseSqlServer(csBuilder.ConnectionString);
+                        optionsBuilder.UseSqlServer(connectionString2);
                         break;
                     case "PostgreSQL":
                         //optionsBuilder.UsePostgreSQL
