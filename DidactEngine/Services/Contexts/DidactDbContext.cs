@@ -45,14 +45,16 @@ namespace DidactEngine.Services.Contexts
                     .AddEnvironmentVariables()
                     .Build();
 
-                var connectionString = configuration.GetConnectionString("Didact");
+                //var connectionString = configuration.GetConnectionString("Didact");
+
+                var connectionString = Environment.GetEnvironmentVariable("DidactConnectionString", EnvironmentVariableTarget.User);
 
                 if (string.IsNullOrWhiteSpace(connectionString))
                 {
                     throw new ArgumentNullException("A connection string was not found for the Didact database.");
                 }
 
-                var connectionString2 = Environment.GetEnvironmentVariable("DidactConnectionString", EnvironmentVariableTarget.User);
+                
 
                 var csBuilder = new SqlConnectionStringBuilder(connectionString)
                 {
@@ -67,7 +69,7 @@ namespace DidactEngine.Services.Contexts
                 switch (databaseProvider)
                 {
                     case "SqlServer":
-                        optionsBuilder.UseSqlServer(connectionString2);
+                        optionsBuilder.UseSqlServer(connectionString);
                         break;
                     case "PostgreSQL":
                         //optionsBuilder.UsePostgreSQL
