@@ -36,7 +36,7 @@ namespace DidactEngine.Licensing
 
             // Parse the license data
             var licenseData = Encoding.UTF8.GetString(dataBytes);
-            var parts = licenseData.Split('|');
+            var parts2 = licenseData.Split('|');
             var failSafeExpiry = DateTime.Parse(parts[1]);
 
             // Check if the fail-safe expiry is still valid
