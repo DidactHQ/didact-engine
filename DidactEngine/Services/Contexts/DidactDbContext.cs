@@ -10,9 +10,9 @@ namespace DidactEngine.Services.Contexts
 
         public DidactDbContext(DbContextOptions<DidactDbContext> options) : base(options) { }
 
-        public virtual DbSet<FifoQueue> FifoQueues { get; set; } = null!;
+        public virtual DbSet<StrictQueue> StrictQueues { get; set; } = null!;
 
-        public virtual DbSet<FifoQueueInbound> FifoQueueInbounds { get; set; } = null!;
+        public virtual DbSet<StrictQueueItem> StrictQueueItems { get; set; } = null!;
 
         public virtual DbSet<Flow> Flows { get; set; } = null!;
 
@@ -26,7 +26,7 @@ namespace DidactEngine.Services.Contexts
 
         public virtual DbSet<HyperQueue> HyperQueues { get; set; } = null!;
 
-        public virtual DbSet<HyperQueueInbound> HyperQueueInbounds { get; set; } = null!;
+        public virtual DbSet<HyperQueueItem> HyperQueueItems { get; set; } = null!;
 
         public virtual DbSet<State> States { get; set; } = null!;
 
@@ -57,7 +57,7 @@ namespace DidactEngine.Services.Contexts
                     ApplicationName = "Didact",
                     PersistSecurityInfo = true,
                     MultipleActiveResultSets = true,
-                    WorkstationID = Environment.MachineName,
+                    WorkstationID = System.Environment.MachineName,
                     TrustServerCertificate = true
                 };
 
@@ -78,15 +78,15 @@ namespace DidactEngine.Services.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new Configurations.FifoQueueConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.FifoQueueInboundConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.StrictQueueConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.StrictQueueItemConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.FlowConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.FlowRunConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.FlowScheduleConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.OrganizationConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.ScheduleTypeConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.HyperQueueConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.HyperQueueInboundConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.HyperQueueItemConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.TriggerTypeConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.StateConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.EngineConfiguration());
