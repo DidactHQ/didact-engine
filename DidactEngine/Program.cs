@@ -1,10 +1,11 @@
-using DidactEngine.Services.BackgroundServices;
+using DidactEngine.Services;
 using DidactEngine.Services.Contexts;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.OpenApi.Models;
 using Spectre.Console;
+using System.Diagnostics;
 using System.Reflection;
 
 #region App metadata
@@ -59,6 +60,46 @@ AnsiConsole.Write(grid);
 #endregion
 
 var builder = WebApplication.CreateBuilder(args);
+
+#region Read appsettings.json as an embedded resource.
+
+// Support multi-environment appsettings files.
+var resourceFileName = string.IsNullOrEmpty(environment)
+    ? $"{assemblyName}.appsettings.json"
+    : $"{assemblyName}.appsettings.{environment}.json";
+
+// Fetch the appsettings.json file as an embedded resource.
+var stream = assembly.GetManifestResourceStream(resourceFileName);
+var reader = new StreamReader(stream!);
+var json = reader.ReadToEnd();
+
+// Create a new IConfiguration.
+var iConfiguration = new ConfigurationBuilder()
+    .AddJsonStream(new MemoryStream(System.Text.Encoding.UTF8.GetBytes(json)))
+    .Build();
+
+#endregion
+
+#region Read enginesettings.json as a runtime IConfiguration.
+
+// Get the real EXE directory
+var exePath = Process.GetCurrentProcess().MainModule?.FileName;
+var exeDirectory = Path.GetDirectoryName(exePath)!;
+
+// Define the path to enginesettings.json
+var engineSettingsPath = Path.Combine(exeDirectory, settingsFilename);
+
+// Build configuration
+var engineSettingsIConfiguration = new ConfigurationBuilder()
+    .SetBasePath(exeDirectory)
+    .AddJsonFile(engineSettingsPath, optional: true, reloadOnChange: true)
+    .Build();
+
+var engineSettings = new EngineSettings();
+engineSettingsIConfiguration.Bind(engineSettings);
+builder.Services.AddSingleton(engineSettings);
+
+#endregion
 
 // Add services to the container.
 builder.Services.AddCors(options =>
